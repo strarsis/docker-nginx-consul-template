@@ -9,6 +9,14 @@ RUN apt-get update \
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 
+# /etc/supervisor/conf.d/nginx.sv.conf:
+RUN echo '[program:nginx]\n\
+command=nginx'\
+> /etc/supervisor/conf.d/nginx.sv.conf
+
+RUN echo '\ndaemon off;' >> /etc/nginx/nginx.conf
+
+
 # consul-template binary
 RUN apt-get update \
  && apt-get install -y wget unzip
@@ -20,14 +28,6 @@ RUN wget -O- "https://releases.hashicorp.com/consul-template/${consul_template_v
 
 RUN apt-get autoremove --purge -y wget unzip \
  && apt-get clean
-
-
-# /etc/supervisor/conf.d/nginx.sv.conf:
-RUN echo '[program:nginx]\n\
-command=nginx'\
-> /etc/supervisor/conf.d/nginx.sv.conf
-
-RUN echo '\ndaemon off;' >> /etc/nginx/nginx.conf
 
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
