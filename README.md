@@ -1,11 +1,11 @@
 # docker-nginx-consul-template
 Docker image for nginx + consul-template (supervisord)
 
+Usage
+-----
 Base of from this image to set up consul-template for nginx configuration.
 
-Example
--------
-### Dockerfile
+### Example Dockerfile
 ````
 FROM nginx-consul-template:latest
 
