@@ -9,21 +9,6 @@ RUN apt-get update \
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 
-# /etc/supervisor/conf.d/consul-template.sv.conf:
-RUN echo '[program:consul-template]\n\
-command=consul-template \\\n\
-         -consul consul:8500 \\\n\
-         -template "/etc/consul-templates/app.conf.ctmpl:/etc/nginx/conf.d/app.conf:sv hup nginx || true\n'\
-> /etc/supervisor/conf.d/consul-template.sv.conf
-
-
-# /etc/supervisor/conf.d/nginx.sv.conf:
-RUN echo '[program:nginx]\n\
-command=nginx'\
-> /etc/supervisor/conf.d/nginx.sv.conf
-
-
-
 # consul-template binary
 RUN apt-get update \
  && apt-get install -y wget unzip
@@ -37,8 +22,25 @@ RUN apt-get autoremove --purge -y wget unzip \
  && apt-get clean
 
 
+# /etc/supervisor/conf.d/consul-template.sv.conf:
+RUN echo '[program:consul-template]\n\
+command=consul-template \n\
+         -consul consul:8500 \n\
+         -template "/etc/consul-templates/app.conf.ctmpl:/etc/nginx/conf.d/app.conf:sv hup nginx || true"\n'\
+> /etc/supervisor/conf.d/consul-template.sv.conf
 
-CMD ["/usr/bin/supervisord"]
+# /etc/supervisor/conf.d/nginx.sv.conf:
+RUN echo '[program:nginx]\n\
+command=nginx'\
+> /etc/supervisor/conf.d/nginx.sv.conf
+
+RUN echo '\ndaemon off;' >> /etc/nginx/nginx.conf
+
+
+COPY app.conf.ctmpl /etc/consul-templates/app.conf.ctmpl
+
+
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
 # nginx listen ports
 EXPOSE 80
