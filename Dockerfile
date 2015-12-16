@@ -22,7 +22,7 @@ RUN apt-get update \
  && apt-get install -y wget unzip
 
 ENV consul_template_version "0.12.0"
-RUN wget -O- "https://releases.hashicorp.com/consul-template/${consul_template_version}/consul-template_${consul_template_version}_linux_amd64.zip" \
+RUN wget -q -O- "https://releases.hashicorp.com/consul-template/${consul_template_version}/consul-template_${consul_template_version}_linux_amd64.zip" \
     | funzip > /usr/bin/consul-template \
  && chmod +x /usr/bin/consul-template
 
