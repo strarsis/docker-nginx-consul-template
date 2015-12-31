@@ -21,7 +21,7 @@ This is already done in this image for nginx and in the example Dockerfile below
 For further information, see this very helpful blog post:
 http://veithen.github.io/2015/01/08/supervisord-redirecting-stdout.html
 
-### Mounting custom nginx config
+### Mounting custom nginx main config
 Don't forget to add/append this line to it to make it work properly with supervisord:
 ````
 daemon off;
