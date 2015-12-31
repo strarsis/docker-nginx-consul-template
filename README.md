@@ -10,9 +10,9 @@ Extra information
 -----------------
 For consul host address + port injected by docker(-compose):
 
--1 Use a hostname for consul default or fixed port during build (e.g. "consulx1").
+1. Use a hostname for consul default or fixed port during build (e.g. "consulx1").
 
--2 Use environment variables (in [supervisord config](http://supervisord.org/configuration.html#environment-variables)) (e.g. %{ENV_CONSUL_HOST}:%{ENV_CONSUL_PORT}).
+2. Use environment variables (in [supervisord config](http://supervisord.org/configuration.html#environment-variables)) (e.g. %{ENV_CONSUL_HOST}:%{ENV_CONSUL_PORT}).
 
 
 ### Example Dockerfile
