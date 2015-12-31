@@ -15,7 +15,11 @@ For setting up consul-template to use a consul host by address + port injected b
 2. Use environment variables (in [supervisord config](http://supervisord.org/configuration.html#environment-variables)) (e.g. %{ENV_CONSUL_HOST}:%{ENV_CONSUL_PORT}).
 
 ### Set up supervisord to log to stdout/stderr
-See http://veithen.github.io/2015/01/08/supervisord-redirecting-stdout.html
+This is already done in the example Dockerfile below for consul-template.
+
+
+For further information, see this very helpful blog post:
+http://veithen.github.io/2015/01/08/supervisord-redirecting-stdout.html
 
 
 ### Example Dockerfile
