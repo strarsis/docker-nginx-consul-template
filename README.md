@@ -8,7 +8,7 @@ Base of from this image to set up consul-template for nginx configuration.
 
 Extra information
 -----------------
-For consul host address + port injected by docker(-compose):
+For setting up consul-template to use a consul host by address + port injected by docker(-compose):
 
 1. Use a hostname for consul default or fixed port during build (e.g. "consulx1").
 
