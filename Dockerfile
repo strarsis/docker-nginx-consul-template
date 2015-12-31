@@ -11,7 +11,13 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # /etc/supervisor/conf.d/nginx.sv.conf:
 RUN echo '[program:nginx]\n\
-command=nginx'\
+# Log to stdout/stderr\n\
+stdout_logfile=/dev/stdout\n\
+stdout_logfile_maxbytes=0\n\
+stderr_logfile=/dev/stderr\n\
+stderr_logfile_maxbytes=0\n\
+\n\
+command=nginx\n'\
 > /etc/supervisor/conf.d/nginx.sv.conf
 
 RUN echo '\ndaemon off;' >> /etc/nginx/nginx.conf
