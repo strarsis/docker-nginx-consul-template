@@ -32,8 +32,10 @@ daemon off;
 ````
 FROM nginx-consul-template:latest
 
-# Copy your nginx configuration template file into the container
-COPY app.conf.ctmpl /etc/consul-templates/app.conf.ctmpl
+# If you want to include it directly in the image (e.g. a sample or empty config),
+# copy your nginx configuration template file into the container
+# COPY app.conf.ctmpl /etc/consul-templates/app.conf.ctmpl
+# Otherwise, mount the config templates folder or individual file(s) into /etc/consul-templates/ when running the image.
 
 # Configure consul-template to use this template file
 # /etc/supervisor/conf.d/consul-template.sv.conf:
