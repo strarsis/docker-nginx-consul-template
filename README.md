@@ -38,6 +38,7 @@ FROM nginx-consul-template:latest
 # Otherwise, mount the config templates folder or individual file(s) into /etc/consul-templates/ when running the image.
 
 # Configure consul-template to use this template file
+# Either directly in image or mount from outside.
 # /etc/supervisor/conf.d/consul-template.sv.conf:
 RUN echo '[program:consul-template]\n\
 # Log to stdout/stderr\n\
