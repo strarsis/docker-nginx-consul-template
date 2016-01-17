@@ -37,6 +37,9 @@ FROM nginx-consul-template:latest
 # COPY app.conf.ctmpl /etc/consul-templates/app.conf.ctmpl
 # Otherwise, mount the config templates folder or individual file(s) into /etc/consul-templates/ when running the image.
 
+# consul-template config
+COPY consul-template.hcl /etc/consul-template.hcl
+
 # Configure consul-template to use this template file
 # Either directly in image or mount from outside.
 # /etc/supervisor/conf.d/consul-template.sv.conf:
@@ -47,8 +50,11 @@ stdout_logfile_maxbytes=0\n\
 stderr_logfile=/dev/stderr\n\
 stderr_logfile_maxbytes=0\n\
 \n\
-command=consul-template \n\
+command=VAULT_ADDR=vault1 VAULT_TOKEN=the-vault-token \n\
+        consul-template \n\
+         -config /etc/consul-template.hcl \n\
          -consul consulx1:8500 \n\
+         -token  the-consul-token \n\
          -template "/etc/consul-templates/app.conf.ctmpl:/etc/nginx/conf.d/app.conf:sv hup nginx || true"\n'\
 > /etc/supervisor/conf.d/consul-template.sv.conf
 

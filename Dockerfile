@@ -5,9 +5,8 @@ FROM nginx:1.9
 RUN apt-get update \
  && apt-get install -y supervisor
 
-# Start consul-template together with nginx
+# Set up supervisord to start consul-template together with nginx
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
 
 # /etc/supervisor/conf.d/nginx.sv.conf:
 RUN echo '[program:nginx]\n\
