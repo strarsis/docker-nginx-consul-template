@@ -18,7 +18,7 @@ Rationale
 - One single consul-template configuration file should handle all (multiple) template configuration files of a service (reload).
 - The reload script, which should be used by consul-template for reloading nginx, also toggles the maintenance mode for the consul service. This is done when the environment variable SERVICE_NAME has been set (e.g. used for Docker + Registrator + Consul) (otherwise the toggling is skipped).
 - The image comes already with a base configuration for consul-template, main.hcl.
-- See the example Dockerfile below.
+- See the example Dockerfile below and the file contents in ./example folder.
 
 
 ### Example Dockerfile
