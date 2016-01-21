@@ -45,3 +45,7 @@ COPY example/app.conf.ctmpl /etc/consul-template/templates/app.conf.ctmpl
 COPY example/nginx.hcl /etc/consul-template/config/nginx.hcl
 
 ````
+
+TODO
+----
+- envconsul for consul-template config
