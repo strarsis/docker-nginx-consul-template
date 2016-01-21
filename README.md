@@ -27,7 +27,7 @@ an empty placeholder configuration template file
 and a consul-template configuration file for using the configuration template file.
 
 ````
-FROM nginx-consul-template:1.9-0.12.2
+FROM strarsis/nginx-consul-template:1.9-0.12.2
 
 # Set consul/vault settings for consul-template directly in Dockerfile using ENV
 ENV CONSUL_HTTP_ADDR "consul"
