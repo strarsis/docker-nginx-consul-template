@@ -4,7 +4,8 @@ Docker image for nginx + consul-template (supervisord)
 
 Usage
 -----
-Before intended usage, an image with consul-template configuration/configuration template files has to be built based of this image.
+Before intended usage, an image with consul-template configuration/configuration template files has to be built based of this image 
+or mounted into the container (e.g. by using docker-compose).
 
 
 Rationale
@@ -27,7 +28,7 @@ an empty placeholder configuration template file
 and a consul-template configuration file for using the configuration template file.
 
 ````
-FROM strarsis/nginx-consul-template:1.9-0.12.2
+FROM strarsis/nginx-consul-template:1.9-0.12.2-0.6.3
 
 
 # Set consul/vault settings for consul-template directly in Dockerfile using ENV
