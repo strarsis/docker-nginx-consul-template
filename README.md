@@ -29,11 +29,15 @@ and a consul-template configuration file for using the configuration template fi
 ````
 FROM nginx-consul-template:1.9-0.12.2
 
+
 # Set consul/vault settings for consul-template directly in Dockerfile using ENV
-ENV CONSUL_HTTP_ADDR "consul"
-ENV CONSUL_TOKEN     ""
-ENV VAULT_ADDR       "vault"
-ENV VAULT_TOKEN      ""
+
+# Note: CONSUL_HTTP_ADDR without http(s)://
+ENV CONSUL_HTTP_ADDR "consul:8500"
+ENV CONSUL_TOKEN     "the-token-for-consul"
+
+ENV VAULT_ADDR       "https://vault.service.consul:8200"
+ENV VAULT_TOKEN      "the-token-for-vault"
 
 
 # Configuration template files
