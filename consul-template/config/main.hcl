@@ -1,8 +1,9 @@
-# Pass by argument line instead option:
+# Only passable by argument line instead option:
 # -consul / CONSUL_HTTP_ADDR
-# -token / CONSUL_TOKEN
+# -token  / CONSUL_TOKEN
 # VAULT_ADDR
 # VAULT_TOKEN
+
 
 retry = "10s"
 max_stale = "10m"
