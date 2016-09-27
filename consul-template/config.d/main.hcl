@@ -31,4 +31,4 @@ deduplicate {
 
 
 # Multiple template files in folder are supported,
-# put them into /etc/consul-template/config/ .
+# put them into /etc/consul-template/config.d/ .
