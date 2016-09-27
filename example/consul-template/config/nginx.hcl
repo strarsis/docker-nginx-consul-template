@@ -1,5 +1,5 @@
 template {
-  source = "/etc/consul-template/templates/app.conf.ctmpl"
+  source = "/etc/consul-template/template/app.conf.ctmpl"
   destination = "/etc/nginx/conf.d/app.conf"
   command = "/etc/consul-template/reload/nginx-reload.sh || true"
 
