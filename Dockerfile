@@ -1,20 +1,20 @@
-FROM nginx:1.9
+FROM nginx:1.9.15
 
 
-# Install supervisord
-RUN apt-get update \
- && apt-get install -y supervisor
-
-# supervisord main configuration
-COPY supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+# Install chaperone process manager
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends python3-pip && \
+    pip3 install chaperone
+RUN mkdir -p /etc/chaperone.d
+ENTRYPOINT ["/usr/local/bin/chaperone"]
 
 
 # Install consul-template + consul agent (binary)
-ENV consul_template_version "0.12.2"
-ENV consul_version          "0.6.3"
+ENV consul_template_version "0.15.0"
+ENV consul_version          "0.7.0"
 
 RUN apt-get update \
- && apt-get install -y wget unzip
+ && apt-get install --no-install-recommends -y wget unzip
 
 RUN wget -q -O- "https://releases.hashicorp.com/consul-template/${consul_template_version}/consul-template_${consul_template_version}_linux_amd64.zip" \
     | funzip > /usr/bin/consul-template \
@@ -29,33 +29,28 @@ RUN apt-get autoremove --purge -y wget unzip \
  && apt-get clean
 
 
-# consul-template supervisord service
-COPY supervisord/consul-template.sv.conf /etc/supervisor/conf.d/consul-template.sv.conf
-
-# consul-template configuration
+# consul-template configurations folder
 RUN mkdir -p /etc/consul-template/config
 
 # consul-template main configuration
 COPY consul-template/config/main.hcl /etc/consul-template/config/main.hcl
 
+# consul-template templates folder
+RUN mkdir -p /etc/consul-template/template
 
-# consul agent supervisord service
-COPY supervisord/consul.sv.conf /etc/supervisor/conf.d/consul.sv.conf
 
 # consul agent configuration
-RUN mkdir -p /etc/consul/config/
+RUN mkdir -p /etc/consul.d/
 
 # consul agent main configuration
-COPY consul/config/main.json /etc/consul/config/main.json
+COPY consul/config/main.json /etc/consul.d/main.json
 
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+# Copy service configuration:
+COPY chaperone.d /etc/chaperone.d/
 
 
 # Service specific configuration (nginx)
-
-# nginx supervisord service
-COPY supervisord/nginx.sv.conf /etc/supervisor/conf.d/nginx.sv.conf
 
 # Reload script for nginx for consul maintenance mode
 # Expects SERVICE_NAME environment variable or skips the maintenance toggle
