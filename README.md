@@ -2,15 +2,9 @@
 Docker image for nginx + consul-template
 
 
-Usage
------
-Before intended usage, an image with consul-template configuration/configuration template files has to be built based of this image 
-or mounted into the container (e.g. by using docker-compose).
-
-
 Rationale
 ---------
-- chaperone runs the services in the container, consul agent, consul-template and nginx, as best practice for multiple services in a docker container.
+- chaperone process manager runs the service processes in the container, consul agent, consul-template and nginx, as best practice for multiple services in a docker container.
 - HCL configuration files used by consul-template don't support interpolation of environment variables, 
   this has been solved by letting chaperone pass the available consul-template environment variables 
   (mapped to the consul-template options) as command line arguments to consul-template.
@@ -19,8 +13,14 @@ Rationale
 - One single consul-template configuration file should handle all (multiple) template configuration files of a service (reload).
 - The reload script, which should be used by consul-template for reloading nginx, also toggles the maintenance mode for the consul service. This is done when the environment variable SERVICE_NAME has been set (e.g. used for Docker + Registrator + Consul) (otherwise the toggling is skipped).
 - The image comes already with a base configuration for consul-template, main.hcl.
+- A local consul agent is used over which consul-template or consul actions can connect to a consul server.
 - See the example Dockerfile below and the file contents in ./example folder.
 
+
+Usage
+-----
+Before intended usage, an image with consul-template configuration/configuration template files has to be built based of this image 
+or mounted into the container (e.g. by using docker-compose).
 
 ### Example Dockerfile
 In this repository there is already a folder ./example which contains 
@@ -42,15 +42,22 @@ ENV VAULT_TOKEN      "the-token-for-vault"
 
 
 # Configuration template files
-COPY example/app.conf.ctmpl /etc/consul-template/templates/app.conf.ctmpl
+COPY example/consul-template/template.d/app.conf.ctmpl /etc/consul-template/template.d/app.conf.ctmpl
 # another.conf.ctmpl ...
 # yet-another.conf.ctmpl
 
 # Consul-template configuration for using these configuration template files (+ service reload)
-COPY example/nginx.hcl /etc/consul-template/config/nginx.hcl
+COPY example/consul-template/confid.d/nginx.hcl /etc/consul-template/config.d/nginx.hcl
 
 ````
 
+### Run example with this Dockerfile / image
+The example files can also be directly mounted into the container instance:
+````
+docker run [...] -v $PWD/example/consul-template/template.d/app.conf.ctmpl:/etc/consul-template/template.d/app.conf.ctmpl -v $PWD/example/consul-template/config.d/nginx.hcl:/etc/consul-template/config.d/nginx.hcl [...] strarsis/nginx-consul-template:1.9.15-0.15.0-0.7.0
+````
+
+
 TODO
 ----
-- envconsul for consul-template config
+- envconsul for consul-template config (?)
