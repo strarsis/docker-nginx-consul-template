@@ -20,13 +20,13 @@ ssl {
 }
 
 syslog {
-  enabled = false
+  enabled  = false
   facility = "LOCAL0"
 }
 
 deduplicate {
   enabled = true
-  prefix = "consul-template/dedup/"
+  prefix  = "consul-template/dedup/"
 }
 
 
