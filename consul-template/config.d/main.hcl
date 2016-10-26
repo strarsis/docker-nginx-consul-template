@@ -9,7 +9,7 @@ retry = "10s"
 max_stale = "10m"
 
 vault {
-  renew = true
+  renew_token = true
   ssl {
     enabled = false
   }
