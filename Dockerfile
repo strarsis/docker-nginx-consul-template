@@ -1,6 +1,6 @@
 # Notice: Disable conntrack.
 
-FROM nginx:1.9.15
+FROM nginx:1.11.5
 
 
 # Install chaperone process manager
