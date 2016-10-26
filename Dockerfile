@@ -12,23 +12,40 @@ ENTRYPOINT ["/usr/local/bin/chaperone"]
 
 
 # Install consul-template + consul agent (binary)
-ENV consul_template_version "0.15.0"
-ENV consul_version          "0.7.0"
+ENV CONSUL_TEMPLATE_VERSION "0.15.0"
+ENV CONSUL_VERSION          "0.7.0"
 
-RUN apt-get update \
- && apt-get install --no-install-recommends -y wget unzip
+# Modified from https://github.com/hashicorp/docker-consul/blob/master/0.X/Dockerfile
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y unzip wget
 
-RUN wget -q -O- "https://releases.hashicorp.com/consul-template/${consul_template_version}/consul-template_${consul_template_version}_linux_amd64.zip" \
-    | funzip > /usr/bin/consul-template \
- && chmod +x /usr/bin/consul-template
+RUN gpg --keyserver pgp.mit.edu --recv-keys 91A6E7F85D05C65630BEF18951852D87348FFC4C
 
-RUN wget -q -O- "https://releases.hashicorp.com/consul/${consul_version}/consul_${consul_version}_linux_amd64.zip" \
-    | funzip > /usr/bin/consul \
- && chmod +x /usr/bin/consul
+# consul-template
+ADD https://releases.hashicorp.com/consul-template/${CONSUL_TEMPLATE_VERSION}/consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip ./consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip
+ADD https://releases.hashicorp.com/consul-template/${CONSUL_TEMPLATE_VERSION}/consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS      ./consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS
+ADD https://releases.hashicorp.com/consul-template/${CONSUL_TEMPLATE_VERSION}/consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS.sig  ./consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS.sig
+
+RUN gpg --batch --verify consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS.sig consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS && \
+    grep consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS | sha256sum -c && \
+    unzip -d /bin consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip
+
+# consul
+ADD https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_linux_amd64.zip ./consul_${CONSUL_VERSION}_linux_amd64.zip
+ADD https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_SHA256SUMS      ./consul_${CONSUL_VERSION}_SHA256SUMS
+ADD https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_SHA256SUMS.sig  ./consul_${CONSUL_VERSION}_SHA256SUMS.sig
+
+RUN gpg --batch --verify consul_${CONSUL_VERSION}_SHA256SUMS.sig consul_${CONSUL_VERSION}_SHA256SUMS && \
+    grep consul_${CONSUL_VERSION}_linux_amd64.zip consul_${CONSUL_VERSION}_SHA256SUMS | sha256sum -c && \
+    unzip -d /bin consul_${CONSUL_VERSION}_linux_amd64.zip
 
 # clean up
-RUN apt-get autoremove --purge -y wget unzip \
- && apt-get clean
+RUN apt-get autoremove --purge -y unzip wget && \
+    apt-get clean && \
+
+    cd /tmp && \
+    rm -rf /tmp/build && \
+    rm -rf /root/.gnupg
 
 
 # consul-template configurations folder
