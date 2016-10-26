@@ -12,7 +12,7 @@ ENTRYPOINT ["/usr/local/bin/chaperone"]
 
 
 # Install consul-template + consul agent (binary)
-ENV CONSUL_TEMPLATE_VERSION "0.15.0"
+ENV CONSUL_TEMPLATE_VERSION "0.16.0"
 ENV CONSUL_VERSION          "0.7.0"
 
 # Modified from https://github.com/hashicorp/docker-consul/blob/master/0.X/Dockerfile
