@@ -7,7 +7,7 @@ FROM nginx:1.11.5
 RUN apt-get update && \
     apt-get install -y --no-install-recommends python3-pip && \
     pip3 install chaperone
-RUN mkdir -p /etc/chaperone.d/
+RUN mkdir -p /etc/chaperone.d
 ENTRYPOINT ["/usr/local/bin/chaperone"]
 
 
@@ -49,24 +49,24 @@ RUN apt-get autoremove --purge -y unzip wget && \
 
 
 # consul-template configurations folder
-RUN mkdir -p /etc/consul-template/config.d/
+RUN mkdir -p /etc/consul-template/config.d
 
 # consul-template main configuration
-COPY consul-template/config.d/ /etc/consul-template/config.d/
+COPY consul-template/config.d /etc/consul-template/config.d
 
 # consul-template templates folder
-RUN mkdir -p /etc/consul-template/template.d/
+RUN mkdir -p /etc/consul-template/template.d
 
 
 # consul agent configuration
-RUN mkdir -p /etc/consul.d/
+RUN mkdir -p /etc/consul.d
 
 # consul agent main configuration
-COPY consul.d/ /etc/consul.d/
+COPY consul.d /etc/consul.d
 
 
 # Copy service configuration:
-COPY chaperone.d /etc/chaperone.d/
+COPY chaperone.d /etc/chaperone.d
 
 
 # Service specific configuration (nginx)
