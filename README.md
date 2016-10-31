@@ -57,7 +57,3 @@ The example files can also be directly mounted into the container instance:
 docker run [...] -v $PWD/example/consul-template/template.d/app.conf.ctmpl:/etc/consul-template/template.d/app.conf.ctmpl -v $PWD/example/consul-template/config.d/nginx.hcl:/etc/consul-template/config.d/nginx.hcl [...] strarsis/nginx-consul-template:1.9.15-0.15.0-0.7.0
 ````
 
-
-TODO
-----
-- envconsul for consul-template config (?)
