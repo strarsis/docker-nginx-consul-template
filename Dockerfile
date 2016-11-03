@@ -7,53 +7,53 @@ ENV CONSUL_VERSION          "0.7.0"
 
 
 # Install chaperone process manager
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-      python3-pip python3-dev && \
-    pip3 install chaperone && \
-    mkdir -p /etc/chaperone.d/ && \
-    apt-get autoremove -y --purge \
-      python3-dev && \
-    apt-get clean && \
-    rm -r /var/lib/apt/lists/*
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+      python3-pip python3-dev \
+ && pip3 install chaperone \
+ && mkdir -p /etc/chaperone.d/ \
+ && apt-get autoremove -y --purge \
+      python3-dev \
+ && apt-get clean \
+ && rm -r /var/lib/apt/lists/*
 ENTRYPOINT ["/usr/local/bin/chaperone"]
 
 
 # Install consul-template + consul agent (binary)
 
 # Modified from https://github.com/hashicorp/docker-consul/blob/master/0.X/Dockerfile
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-      unzip wget && \
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+      unzip wget \
     \
-    gpg --keyserver pgp.mit.edu --recv-keys 91A6E7F85D05C65630BEF18951852D87348FFC4C && \
+ && gpg --keyserver pgp.mit.edu --recv-keys 91A6E7F85D05C65630BEF18951852D87348FFC4C \
     \
     # consul-template
-    wget https://releases.hashicorp.com/consul-template/${CONSUL_TEMPLATE_VERSION}/consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip && \
-    wget https://releases.hashicorp.com/consul-template/${CONSUL_TEMPLATE_VERSION}/consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS && \
-    wget https://releases.hashicorp.com/consul-template/${CONSUL_TEMPLATE_VERSION}/consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS.sig && \
+ && wget https://releases.hashicorp.com/consul-template/${CONSUL_TEMPLATE_VERSION}/consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip \
+ && wget https://releases.hashicorp.com/consul-template/${CONSUL_TEMPLATE_VERSION}/consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS \
+ && wget https://releases.hashicorp.com/consul-template/${CONSUL_TEMPLATE_VERSION}/consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS.sig \
     \
-    gpg --batch --verify consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS.sig consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS && \
-    grep consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS | sha256sum -c && \
-    unzip -d /bin consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip && \
+ && gpg --batch --verify consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS.sig consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS \
+ && grep consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS | sha256sum -c \
+ && unzip -d /bin consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip \
     \
     # consul
-    wget https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_linux_amd64.zip && \
-    wget https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_SHA256SUMS && \
-    wget https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_SHA256SUMS.sig && \
+ && wget https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_linux_amd64.zip \
+ && wget https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_SHA256SUMS \
+ && wget https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_SHA256SUMS.sig \
     \
-    gpg --batch --verify consul_${CONSUL_VERSION}_SHA256SUMS.sig consul_${CONSUL_VERSION}_SHA256SUMS && \
-    grep consul_${CONSUL_VERSION}_linux_amd64.zip consul_${CONSUL_VERSION}_SHA256SUMS | sha256sum -c && \
-    unzip -d /bin consul_${CONSUL_VERSION}_linux_amd64.zip && \
+ && gpg --batch --verify consul_${CONSUL_VERSION}_SHA256SUMS.sig consul_${CONSUL_VERSION}_SHA256SUMS \
+ && grep consul_${CONSUL_VERSION}_linux_amd64.zip consul_${CONSUL_VERSION}_SHA256SUMS | sha256sum -c \
+ && unzip -d /bin consul_${CONSUL_VERSION}_linux_amd64.zip \
     \
     # clean up
-    cd /tmp && \
-    rm -rf /tmp/build && \
-    rm -rf /root/.gnupg && \
-    apt-get autoremove -y --purge \
-      unzip wget && \
-    apt-get clean && \
-    rm -r /var/lib/apt/lists/*
+ && cd /tmp \
+ && rm -rf /tmp/build \
+ && rm -rf /root/.gnupg \
+ && apt-get autoremove -y --purge \
+      unzip wget \
+ && apt-get clean \
+ && rm -r /var/lib/apt/lists/*
 
 
 # consul-template configurations folder
