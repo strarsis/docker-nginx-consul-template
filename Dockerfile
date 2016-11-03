@@ -36,6 +36,7 @@ RUN apt-get update \
  && gpg --batch --verify consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS.sig consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS \
  && grep consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS | sha256sum -c \
  && unzip -d /bin consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip \
+ && rm consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip \
     \
     # consul
  && wget https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_linux_amd64.zip \
@@ -45,6 +46,7 @@ RUN apt-get update \
  && gpg --batch --verify consul_${CONSUL_VERSION}_SHA256SUMS.sig consul_${CONSUL_VERSION}_SHA256SUMS \
  && grep consul_${CONSUL_VERSION}_linux_amd64.zip consul_${CONSUL_VERSION}_SHA256SUMS | sha256sum -c \
  && unzip -d /bin consul_${CONSUL_VERSION}_linux_amd64.zip \
+ && rm consul_${CONSUL_VERSION}_linux_amd64.zip \
     \
     # clean up
  && cd /tmp \
