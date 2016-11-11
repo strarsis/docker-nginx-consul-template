@@ -79,7 +79,7 @@ RUN mkdir -p /etc/consul.d
 COPY consul.d /etc/consul.d
 
 
-# Copy service configuration:
+# Copy service configuration
 COPY chaperone.d /etc/chaperone.d
 
 
